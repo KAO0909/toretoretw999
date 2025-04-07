@@ -14,11 +14,11 @@ st.title("🎌 詞彙即時查詢工具（日文→繁中）")
 query = st.text_input("請輸入日文單詞或句子進行查詢：")
 
 if query:
-    matches = df[df['日文原文'].str.contains(query, na=False)]
+    matches = df[df['日文'].str.contains(query, na=False)]
 
     found_terms = []
     for _, row in df.iterrows():
-        if row['日文原文'] in query:
+        if row['日文'] in query:
             found_terms.append(row)
 
     if matches.empty and not found_terms:
