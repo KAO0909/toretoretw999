@@ -9,3 +9,5 @@ MARVEL,漫威
 キズナアイ,絆愛
 ハローキティ,Hello Kitty
 ちいかわ,吉伊卡哇
+
+print(df.columns.tolist())
