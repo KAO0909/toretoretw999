@@ -1,35 +1,24 @@
-
 import streamlit as st
 import pandas as pd
 
-# 讀取詞庫 CSV
-@st.cache_data
-def load_data():
-    return pd.read_csv("term_lookup_demo.csv")
+# 設定網頁標題
+st.set_page_config(page_title="日文詞彙查詢工具", layout="centered")
+st.title("📖 日文詞彙查詢工具（雲端同步版）")
 
-df = load_data()
+# 從 Google Sheets 載入資料
+sheet_url = "https://docs.google.com/spreadsheets/d/1KNmZnyS63zxPtYqXU5cfQlUuvbDam63t/export?format=csv"
+df = pd.read_csv(sheet_url)
 
-st.title("🎌 詞彙即時查詢工具（日文→繁中）")
+# 顯示搜尋欄
+query = st.text_input("🔍 請輸入日文詞彙：")
 
-query = st.text_input("請輸入日文單詞或句子進行查詢：")
-
+# 執行查詢
 if query:
-    matches = df[df['日文原文'].str.contains(query, na=False)]
-
-    found_terms = []
-    for _, row in df.iterrows():
-        if row['日文原文'] in query:
-            found_terms.append(row)
-
-    if matches.empty and not found_terms:
-        st.warning("找不到對應詞彙，請確認輸入內容是否正確。")
-
+    matches = df[df['日文原文'].str.contains(query, na=False, case=False)]
     if not matches.empty:
-        st.subheader("🔍 模糊查詢結果")
+        st.success(f"找到 {len(matches)} 筆結果：")
         st.dataframe(matches)
-
-    if found_terms:
-        st.subheader("🧩 整句比對中出現的詞彙")
-        st.dataframe(pd.DataFrame(found_terms))
+    else:
+        st.warning("找不到對應詞彙，請確認輸入是否正確。")
 else:
-    st.info("請輸入日文詞彙或句子，例如：『ペットボトルカバーは便利です』 或 『スペシャル』")
+    st.info("請輸入日文詞彙開始查詢。")
