@@ -4,7 +4,7 @@ import openai
 import os
 
 # 設定 OpenAI API 金鑰（建議改為環境變數）
-openai.api_key = os.getenv("OPENAI_API_KEY")  # 或直接填入你的金鑰（不建議）
+openai.api_key = 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
 
 # 設定網頁標題
 st.set_page_config(page_title="日文詞彙查詢工具", layout="centered")
